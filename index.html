@@ -1,6 +1,51 @@
 <!DOCTYPE html>
 
+<head>
+    <title>Rock Paper Scissors</title>
+    <meta charset="UTF-8"/>
+    <link rel="stylesheet" href="styles.css">
+</head>
+
+<body>
+
+    <h2 class="centered">Welcome to Rock Paper Scissors! </h2>
+    <h3 class="centered">Play against the computer by clicking the buttons below</h3>
+
+    <div class="centered">
+        <button id="rock">Rock</button>
+        <button id="paper">Paper</button>
+        <button id="scissors">Scissors</button>
+    </div>
+
+    <p id="scoreboard" class= "centered">You 0 - 0 Computer</p>
+
+    <p id="finalResult" class= "centered"></p>
+
+</body>
+
 <script>
+
+    let gameOver = false;
+    let playerWins = 0;
+    let computerWins = 0;
+
+    const r = document.querySelector("#rock");
+    const p = document.querySelector("#paper");
+    const s = document.querySelector("#scissors");
+
+    r.addEventListener('click',function (e){
+        playRound("rock",computerPlay());
+    });
+    p.addEventListener('click',function (e){
+        playRound("paper",computerPlay());
+    });
+    s.addEventListener('click',function (e){
+        playRound("scissors",computerPlay());
+    });
+
+    const scoreboard = document.querySelector("#scoreboard");
+    const finalResult = document.querySelector("#finalResult");
+
     function computerPlay(){
         num = Math.random();
         if (num < 0.33) {
@@ -15,35 +60,54 @@
     function playRound(playerSelection, computerSelection){
         playerSelection.toLowerCase();
         if (playerSelection === computerSelection){
-            return "It's a tie!"
+            tie();
         } else if (playerSelection === "paper" && computerSelection === "rock" 
         || playerSelection === "rock" && computerSelection === "scissors"
         || playerSelection === "scissors" && computerSelection === "paper"){
-            return `You win! ${playerSelection} beats ${computerSelection}`;
+            playerWin();
         } else {
-            return `You lose! ${computerSelection} beats ${playerSelection}`;
+            computerWin();
         }
     }
 
-    function game(){
-        let playerWin = 0;
-        for (let i=0; i<5; i++){
-            let result = playRound(prompt("Rock, paper, or scissors?"),computerPlay());
-            console.log(result);
-            if (result === "It's a tie!"){
-                playerWin+=0.5;
-            } else if (result.charAt(4) == "w"){
-                playerWin++;
-            }
-        }
-        if (playerWin > 2.5) {
-            console.log(`You win! The final score is ${playerWin} - ${5-playerWin}`);
-        } else if (playerWin == 2.5){
-            console.log(`You tied! The final score is ${playerWin} - ${5-playerWin}`);
-        } else {
-            console.log(`You lose! The final score is ${5-playerWin} - ${playerWin}`);
-        }
+    function tie(){
+        if(gameOver){
+            return;
+        }    
+        playerWins+=0.5;
+        computerWins+=0.5;
+        scoreboard.innerHTML = `You ${playerWins} - ${computerWins} Computer`
+        checkForWin();
     }
 
-    game();
+    function playerWin(){
+        if(gameOver){
+            return;
+        }   
+        playerWins++;
+        scoreboard.innerHTML = `You ${playerWins} - ${computerWins} Computer`
+        checkForWin();
+    }
+
+    function computerWin(){
+        if(gameOver){
+            return;
+        }   
+        computerWins++;
+        scoreboard.innerHTML = `You ${playerWins} - ${computerWins} Computer`
+        checkForWin();
+    }
+
+    function checkForWin(){
+        if(computerWins === 5 && playerWins === 5){
+            gameOver = true;
+            finalResult.innerHTML = `You tied! The final score is ${playerWins} - ${computerWins}`;
+        } else if (playerWins === 5){
+            gameOver = true;
+            finalResult.innerHTML = `You win! The final score is ${playerWins} - ${computerWins}`;
+        } else if (computerWins === 5){
+            gameOver = true;
+            finalResult.innerHTML = `You lose! The final score is ${playerWins} - ${computerWins}`;
+        }
+    }
 </script>
