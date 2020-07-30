@@ -102,10 +102,10 @@
         if(computerWins === 5 && playerWins === 5){
             gameOver = true;
             finalResult.innerHTML = `You tied! The final score is ${playerWins} - ${computerWins}`;
-        } else if (playerWins === 5){
+        } else if (playerWins >= 5){
             gameOver = true;
             finalResult.innerHTML = `You win! The final score is ${playerWins} - ${computerWins}`;
-        } else if (computerWins === 5){
+        } else if (computerWins >= 5){
             gameOver = true;
             finalResult.innerHTML = `You lose! The final score is ${playerWins} - ${computerWins}`;
         }
